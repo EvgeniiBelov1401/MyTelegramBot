@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyTelegramBot.Services
+namespace MyTelegramBot.Modules.Services
 {
     internal interface IStorage
     {

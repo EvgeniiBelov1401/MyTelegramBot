@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyTelegramBot.Configuration;
 using MyTelegramBot.Controllers;
 using MyTelegramBot.Modules;
-using MyTelegramBot.Services;
+using MyTelegramBot.Modules.Services;
 using System.Text;
 using Telegram.Bot;
 
@@ -25,16 +26,27 @@ namespace MyTelegramBot
             Console.WriteLine("Сервис остановлен");
         }
 
+        //Метод для конфигурации
+        static AppSettings BuildAppSettings()
+        {
+            return new AppSettings()
+            {
+                BotToken = "6804454204:AAGjSJvJdiI2QxeqIWDN6DdpgUJD4l-W8GY"
+            };
+        }
         //Конфигурация
         static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<TextMessageController>();
-            services.AddTransient<InlineKeyboardController>();
-            services.AddTransient<DefaultMessageController>();
+            AppSettings appSettings = BuildAppSettings();
+            services.AddSingleton(BuildAppSettings());
 
             services.AddSingleton<IStorage, MemoryStorage>();
 
-            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("6804454204:AAGjSJvJdiI2QxeqIWDN6DdpgUJD4l-W8GY"));
+            services.AddTransient<TextMessageController>();
+            services.AddTransient<InlineKeyboardController>();
+            services.AddTransient<DefaultMessageController>();
+         
+            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken));
             services.AddHostedService<Bot>();
         }
     }

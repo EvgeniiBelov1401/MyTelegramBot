@@ -31,6 +31,7 @@ namespace MyTelegramBot.Modules
             }
             if (update.Type == UpdateType.Message)
             {
+                //Подсчет символов в строке
                 switch (update.Message!.Type)
                 {
                     case MessageType.Text:

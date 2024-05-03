@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyTelegramBot.Modules.Services
+namespace MyTelegramBot.Services
 {
     internal class MemoryStorage : IStorage
     {

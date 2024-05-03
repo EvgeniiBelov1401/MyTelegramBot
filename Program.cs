@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using MyTelegramBot.Configuration;
 using MyTelegramBot.Controllers;
 using MyTelegramBot.Modules;
-using MyTelegramBot.Modules.Services;
+using MyTelegramBot.Services;
 using System.Text;
 using Telegram.Bot;
 

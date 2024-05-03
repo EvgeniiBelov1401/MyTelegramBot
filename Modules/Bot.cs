@@ -9,16 +9,25 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Exceptions;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot.Polling;
+using MyTelegramBot.Controllers;
 
 namespace MyTelegramBot.Modules
 {
     internal class Bot:BackgroundService
     {
         private ITelegramBotClient _telegramClient;
-        public Bot(ITelegramBotClient telegramClient)
+        private TextMessageController _textMessageController;
+        private InlineKeyboardController _inlineKeyboardController;
+        private DefaultMessageController _defaultMessageController;
+        public Bot(ITelegramBotClient telegramClient,
+            TextMessageController textMessageController,
+            InlineKeyboardController inlineKeyboardController,
+            DefaultMessageController defaultMessageController)
         {
             _telegramClient = telegramClient;
-
+            _textMessageController = textMessageController;
+            _inlineKeyboardController = inlineKeyboardController;
+            _defaultMessageController = defaultMessageController;
         }
 
         //Метод для обработки обычных событий
@@ -26,7 +35,7 @@ namespace MyTelegramBot.Modules
         {
             if (update.Type == UpdateType.CallbackQuery)
             {
-                await _telegramClient.SendTextMessageAsync(update.Message.Chat.Id, "Вы нажали кнопку", cancellationToken: cancellationToken);
+                await _inlineKeyboardController.Handle(update.CallbackQuery, cancellationToken);
                 return;
             }
             if (update.Type == UpdateType.Message)
@@ -35,10 +44,10 @@ namespace MyTelegramBot.Modules
                 switch (update.Message!.Type)
                 {
                     case MessageType.Text:
-                        await _telegramClient.SendTextMessageAsync(update.Message.From.Id, $"В вашем сообщении: {update.Message.Text.Length} символов", cancellationToken: cancellationToken);
+                        await _textMessageController.Handle(update.Message, cancellationToken);
                         return;
-                    default: // unsupported message
-                        await _telegramClient.SendTextMessageAsync(update.Message.From.Id, $"Данный тип сообщений не поддерживается. Пожалуйста отправьте текст.", cancellationToken: cancellationToken);
+                    default: 
+                        await _defaultMessageController.Handle(update.Message, cancellationToken);
                         return;
                 }
             }

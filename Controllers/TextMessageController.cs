@@ -16,14 +16,11 @@ namespace MyTelegramBot.Controllers
     internal class TextMessageController
     {
         private readonly ITelegramBotClient _telegramClient;
-        private readonly IFunction _chosenFunction;
-        private readonly IStorage _memoryStorage;
+        public static string command;
 
-        public TextMessageController(ITelegramBotClient telegramBotClient,IFunction choosenFunction,IStorage memoryStorage)
+        public TextMessageController(ITelegramBotClient telegramBotClient,IStorage memoryStorage)
         {
             _telegramClient = telegramBotClient;
-            _chosenFunction = choosenFunction;
-            _memoryStorage = memoryStorage;
         }
 
         public async Task Handle(Message message, CancellationToken ct)
@@ -47,10 +44,15 @@ namespace MyTelegramBot.Controllers
                     await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Отправьте нужный текст.", cancellationToken: ct);
                     break;
             }
-            
-
-            string userChoosenExercise= _memoryStorage.GetSession(message.Chat.Id).Exercise;
-            _chosenFunction.Process(userChoosenExercise,);
+            switch(command)
+            {
+                case "countChars":
+                    await _telegramClient.SendTextMessageAsync(message.From.Id,$"Длина сообщения {message.Text.Length}");
+                    break;
+                case "sumInt":
+                    await _telegramClient.SendTextMessageAsync(message.From.Id, Calculate.Calc(message.Text));
+                    break;
+            }            
         }
     }
 }

@@ -14,6 +14,7 @@ namespace MyTelegramBot.Controllers
     internal class InlineKeyboardController
     {
         private readonly ITelegramBotClient _telegramClient;
+        //private readonly TextMessageController _textMessageController;
         private readonly IStorage _memoryStorage;
 
         public InlineKeyboardController(ITelegramBotClient telegramBotClient, IStorage memoryStorage)
@@ -38,6 +39,8 @@ namespace MyTelegramBot.Controllers
             await _telegramClient.SendTextMessageAsync(callbackQuery.From.Id,
                 $"<b>Выбранная функция - {exerciseText}.{Environment.NewLine}</b>" +
                 $"{Environment.NewLine}Можно поменять в главном меню.", cancellationToken: ct, parseMode: ParseMode.Html);
+            if (exerciseText == "Счет символов в строке") TextMessageController.command = "countChars";
+            else if (exerciseText == "Сумма целых чисел") TextMessageController.command = "sumInt";
         }        
     }
 }

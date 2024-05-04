@@ -42,7 +42,7 @@ namespace MyTelegramBot
             services.AddSingleton(BuildAppSettings());
 
             services.AddSingleton<IStorage, MemoryStorage>();
-            services.AddSingleton<IFunction, Function>();
+            
 
             services.AddTransient<TextMessageController>();
             services.AddTransient<InlineKeyboardController>();

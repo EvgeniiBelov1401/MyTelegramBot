@@ -6,28 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyTelegramBot.Utilities
 {
-    internal class Function : IFunction
+    internal static class Calculate
     {
-        public string Process(string exercise, string inputText)
-        {
-            if (exercise == "countChars")
-            {
-                return CountCharsInText(inputText).ToString();
-            }
-            else if (exercise == "sumInt")
-            {
-                return SumIntInText(inputText);
-            }
-            else return "!!!";
-        }
-
-        private int CountCharsInText(string inputText)
-        {
-            if (!string.IsNullOrEmpty(inputText)) return inputText.Length;
-            else return 0;
-        }
-
-        private string SumIntInText(string inputText)
+        public static string Calc(string inputText)
         {
             int sum = 0;
             string[] numbers = inputText.Split(' ');
@@ -42,13 +23,12 @@ namespace MyTelegramBot.Utilities
                     }
                     else throw new FormatException("Не допустимое значение");
                 }
-                return sum.ToString();
+                return $"Cумма чисел: {sum.ToString()}";
             }
             catch (FormatException ex)
             {
                 return ex.Message;
-            }            
+            }
         }
-
     }
 }

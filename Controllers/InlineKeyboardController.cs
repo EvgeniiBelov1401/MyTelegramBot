@@ -20,9 +20,8 @@ namespace MyTelegramBot.Controllers
 
         public async Task Handle(CallbackQuery? callbackQuery, CancellationToken ct)
         {
-            Console.WriteLine($"Контроллер {GetType().Name} обнаружил нажатие на кнопку");
-
-            await _telegramClient.SendTextMessageAsync(callbackQuery.From.Id, $"Обнаружено нажатие на кнопку", cancellationToken: ct);
+            Console.WriteLine($"Контроллер {GetType().Name} получил сообщение");
+            await _telegramClient.SendTextMessageAsync(callbackQuery.From.Id, $"Обнаружено нажатие на кнопку {callbackQuery.Data}", cancellationToken: ct);
         }
     }
 }

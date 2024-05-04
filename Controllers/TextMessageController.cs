@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using MyTelegramBot.Configuration;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace MyTelegramBot.Controllers
 {
@@ -20,8 +22,25 @@ namespace MyTelegramBot.Controllers
 
         public async Task Handle(Message message, CancellationToken ct)
         {
-            Console.WriteLine($"Контроллер {GetType().Name} получил сообщение");
-            await _telegramClient.SendTextMessageAsync(message.Chat.Id, $"Получено текстовое сообщение", cancellationToken: ct);
+            switch (message.Text)
+            {
+                case "/start":
+                    var buttons = new List<InlineKeyboardButton[]>();
+                    buttons.Add(new[]
+                    {
+                        InlineKeyboardButton.WithCallbackData($"Счет символов в строке", $"countChars"),
+                        InlineKeyboardButton.WithCallbackData($"Сумма целых чисел" , $"sumInt")
+                    });
+
+                    await _telegramClient.SendTextMessageAsync(message.Chat.Id, $"<b>Бот имеет 2 функции:</b> {Environment.NewLine}" +
+                        $"{Environment.NewLine}<b>1.</b> <i>Считает количество символов в тексте.</i>" +
+                        $"{Environment.NewLine}<b>2.</b> <i>Суммирует целые числа, записанные через пробел.</i>{Environment.NewLine}", cancellationToken: ct, parseMode: ParseMode.Html, replyMarkup: new InlineKeyboardMarkup(buttons));
+
+                    break;
+                default:
+                    await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Отправьте нужный текст.", cancellationToken: ct);
+                    break;
+            }
         }
     }
 }

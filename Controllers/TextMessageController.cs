@@ -8,16 +8,22 @@ using Telegram.Bot.Types;
 using MyTelegramBot.Configuration;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using MyTelegramBot.Utilities;
+using MyTelegramBot.Services;
 
 namespace MyTelegramBot.Controllers
 {
     internal class TextMessageController
     {
         private readonly ITelegramBotClient _telegramClient;
+        private readonly IFunction _chosenFunction;
+        private readonly IStorage _memoryStorage;
 
-        public TextMessageController(ITelegramBotClient telegramBotClient)
+        public TextMessageController(ITelegramBotClient telegramBotClient,IFunction choosenFunction,IStorage memoryStorage)
         {
             _telegramClient = telegramBotClient;
+            _chosenFunction = choosenFunction;
+            _memoryStorage = memoryStorage;
         }
 
         public async Task Handle(Message message, CancellationToken ct)
@@ -41,6 +47,10 @@ namespace MyTelegramBot.Controllers
                     await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Отправьте нужный текст.", cancellationToken: ct);
                     break;
             }
+            //await _telegramClient.SendTextMessageAsync(message.From.Id);
+
+            string userChoosenExercise= _memoryStorage.GetSession(message.Chat.Id).Exercise;
+            _chosenFunction.Process(userChoosenExercise,);
         }
     }
 }

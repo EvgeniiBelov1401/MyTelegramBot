@@ -22,7 +22,7 @@ namespace MyTelegramBot.Services
             if (_sessions.ContainsKey(chatId))
                 return _sessions[chatId];
 
-            var newSession = new Session() { Exercise = "ru" };//не забыть здесь поменять!!!
+            var newSession = new Session() { Exercise = "countChars" };
             _sessions.TryAdd(chatId, newSession);
             return newSession;
         }

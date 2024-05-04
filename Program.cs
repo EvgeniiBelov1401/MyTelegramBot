@@ -4,6 +4,7 @@ using MyTelegramBot.Configuration;
 using MyTelegramBot.Controllers;
 using MyTelegramBot.Modules;
 using MyTelegramBot.Services;
+using MyTelegramBot.Utilities;
 using System.Text;
 using Telegram.Bot;
 
@@ -41,6 +42,7 @@ namespace MyTelegramBot
             services.AddSingleton(BuildAppSettings());
 
             services.AddSingleton<IStorage, MemoryStorage>();
+            services.AddSingleton<IFunction, Function>();
 
             services.AddTransient<TextMessageController>();
             services.AddTransient<InlineKeyboardController>();

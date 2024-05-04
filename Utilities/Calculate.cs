@@ -8,7 +8,7 @@ namespace MyTelegramBot.Utilities
 {
     internal static class Calculate
     {
-        public static string Calc(string inputText)
+        public static string CalcSum(string inputText)
         {
             int sum = 0;
             string[] numbers = inputText.Split(' ');
@@ -21,7 +21,7 @@ namespace MyTelegramBot.Utilities
                     {
                         sum += num;
                     }
-                    else throw new FormatException("Не допустимое значение");
+                    else throw new FormatException("Не допустимое значение!!!");
                 }
                 return $"Cумма чисел: {sum.ToString()}";
             }
@@ -29,6 +29,12 @@ namespace MyTelegramBot.Utilities
             {
                 return ex.Message;
             }
+        }
+        public static string CalcLength(string inputText)
+        {
+            if (!string.IsNullOrEmpty(inputText)) 
+                return $"Длина строки: {inputText.Length.ToString()} символов";
+            else return $"Пустая строка";
         }
     }
 }

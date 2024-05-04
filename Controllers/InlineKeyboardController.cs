@@ -14,7 +14,6 @@ namespace MyTelegramBot.Controllers
     internal class InlineKeyboardController
     {
         private readonly ITelegramBotClient _telegramClient;
-        //private readonly TextMessageController _textMessageController;
         private readonly IStorage _memoryStorage;
 
         public InlineKeyboardController(ITelegramBotClient telegramBotClient, IStorage memoryStorage)

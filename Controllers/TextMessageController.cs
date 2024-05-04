@@ -38,19 +38,24 @@ namespace MyTelegramBot.Controllers
                     await _telegramClient.SendTextMessageAsync(message.Chat.Id, $"<b>Бот имеет 2 функции:</b> {Environment.NewLine}" +
                         $"{Environment.NewLine}<b>1.</b> <i>Считает количество символов в тексте.</i>" +
                         $"{Environment.NewLine}<b>2.</b> <i>Суммирует целые числа, записанные через пробел.</i>{Environment.NewLine}", cancellationToken: ct, parseMode: ParseMode.Html, replyMarkup: new InlineKeyboardMarkup(buttons));
-
                     break;
-                default:
-                    await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Отправьте нужный текст.", cancellationToken: ct);
+                default:                 
+                break;
+                case "/about":
+                    await _telegramClient.SendTextMessageAsync(message.Chat.Id, $"MyBotByBelovBot {Environment.NewLine}" +
+                        $"{Environment.NewLine}Бот создан в образовательных целях." +
+                        $"{Environment.NewLine}Автор: Белов Евгений Александрович.{Environment.NewLine}");
                     break;
             }
             switch(command)
             {
                 case "countChars":
-                    await _telegramClient.SendTextMessageAsync(message.From.Id,$"Длина сообщения {message.Text.Length}");
+                    await _telegramClient.SendTextMessageAsync(message.From.Id,Calculate.CalcLength(message.Text));
                     break;
                 case "sumInt":
-                    await _telegramClient.SendTextMessageAsync(message.From.Id, Calculate.Calc(message.Text));
+                    await _telegramClient.SendTextMessageAsync(message.From.Id, Calculate.CalcSum(message.Text));
+                    break;
+                    default : 
                     break;
             }            
         }

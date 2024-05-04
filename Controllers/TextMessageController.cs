@@ -47,7 +47,7 @@ namespace MyTelegramBot.Controllers
                     await _telegramClient.SendTextMessageAsync(message.Chat.Id, "Отправьте нужный текст.", cancellationToken: ct);
                     break;
             }
-            //await _telegramClient.SendTextMessageAsync(message.From.Id);
+            
 
             string userChoosenExercise= _memoryStorage.GetSession(message.Chat.Id).Exercise;
             _chosenFunction.Process(userChoosenExercise,);
